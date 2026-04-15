@@ -1,0 +1,18 @@
+{
+  "name": "Information Metabolism Diagnostic",
+  "short_name": "Alchemy Diagnostic",
+  "description": "A 12-question snapshot of how information moves through your system. Built on the torus framework.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0a0e1a",
+  "theme_color": "#0a0e1a",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
