@@ -160,9 +160,11 @@
   // STATE
   // =====================================================================
   const state = {
-    view: 'landing',  // landing | question | report
+    view: 'landing',  // landing | question | email-gate | report
     index: 0,
     answers: {},
+    name: '',
+    email: '',
     embed: document.body.dataset.embed === 'true'
   };
 
@@ -272,7 +274,9 @@
     }
     recs.push({
       tier: 'Discovery call',
-      body: 'Walk through these results in person. Schedule at rubinsteinproductions.com.'
+      body: 'Walk through these results in person. Thirty minutes to map what the diagnostic surfaced.',
+      // TODO: replace with your actual Cal.com / Calendly URL
+      cta: { label: 'Book a call →', href: 'https://rubinsteinproductions.com' }
     });
     return recs.slice(0, 3);
   }
@@ -440,6 +444,10 @@
     <li>About four minutes</li>
     <li>No email required</li>
   </ul>
+  <div class="field">
+    <label class="field-label" for="user-name">Who is this for? <span class="field-optional">(optional)</span></label>
+    <input id="user-name" class="field-input" type="text" placeholder="e.g. Sarah" autocomplete="off" maxlength="60" value="${state.name}">
+  </div>
   <button class="btn-primary" data-action="start">Begin</button>
   <p class="footnote">Built on the Information Alchemist OS methodology. Results are computed locally — nothing leaves your browser.</p>
 </section>`;
@@ -493,6 +501,27 @@
   }
 
   // =====================================================================
+  // VIEW: EMAIL GATE
+  // =====================================================================
+  function renderEmailGate() {
+    const greeting = state.name ? `, ${state.name}` : '';
+    return `
+<section class="email-gate">
+  <div class="eyebrow">YOUR RESULTS ARE READY</div>
+  <h1>Your report is ready${greeting}.</h1>
+  <p class="lede">Enter your email and I'll follow up after you've had time to sit with it. No sequences. No automation.</p>
+  <div class="field">
+    <label class="field-label" for="gate-email">Email address <span class="field-optional">(optional)</span></label>
+    <input id="gate-email" class="field-input" type="email" placeholder="you@example.com" autocomplete="email" value="${state.email}">
+  </div>
+  <div class="gate-actions">
+    <button class="btn-primary" data-action="show-report">See my report →</button>
+    <button class="btn-text" data-action="skip-email">Skip</button>
+  </div>
+</section>`;
+  }
+
+  // =====================================================================
   // VIEW: REPORT
   // =====================================================================
   function renderReport() {
@@ -506,17 +535,20 @@
 
     let findingsHtml = findings.map(f => `<li>${f}</li>`).join('');
     let recsHtml = recs.map(r => `
-      <div class="rec">
+      <div class="rec${r.cta ? ' cta' : ''}">
         <div class="rec-tier">${r.tier}</div>
         <div class="rec-body">${r.body}</div>
+        ${r.cta ? `<a class="btn-booking" href="${r.cta.href}" target="_blank" rel="noopener noreferrer">${r.cta.label}</a>` : ''}
       </div>
     `).join('');
+
+    const forLine = state.name ? ` · ${state.name}` : '';
 
     return `
 <section class="report">
   <div class="report-header">
     <div class="eyebrow">RUBINSTEIN PRODUCTIONS · INFORMATION ALCHEMIST OS</div>
-    <h1>Information Metabolism Report</h1>
+    <h1>Information Metabolism Report${forLine}</h1>
     <div class="report-meta">${date} · placement: <strong>${q.name}</strong></div>
   </div>
 
@@ -565,6 +597,7 @@
     let html = '';
     if (state.view === 'landing') html = renderLanding();
     else if (state.view === 'question') html = renderQuestion();
+    else if (state.view === 'email-gate') html = renderEmailGate();
     else if (state.view === 'report') html = renderReport();
     root.innerHTML = html;
     postHeight();
@@ -585,6 +618,8 @@
 
   function handleAction(action, target) {
     if (action === 'start') {
+      const nameInput = document.getElementById('user-name');
+      if (nameInput) state.name = nameInput.value.trim();
       state.view = 'question';
       state.index = 0;
       render();
@@ -599,10 +634,20 @@
         state.index++;
         render();
       } else {
-        state.view = 'report';
+        state.view = 'email-gate';
         render();
-        postEvent('complete', { scores: computeScores(state.answers) });
       }
+    } else if (action === 'show-report') {
+      const emailInput = document.getElementById('gate-email');
+      if (emailInput) state.email = emailInput.value.trim();
+      if (state.embed && state.email) postEvent('email', { email: state.email });
+      state.view = 'report';
+      render();
+      postEvent('complete', { scores: computeScores(state.answers) });
+    } else if (action === 'skip-email') {
+      state.view = 'report';
+      render();
+      postEvent('complete', { scores: computeScores(state.answers) });
     } else if (action === 'back') {
       if (state.index > 0) {
         state.index--;
@@ -628,8 +673,16 @@
   // Keyboard nav
   document.addEventListener('keydown', (e) => {
     if (state.view === 'landing' && (e.key === 'Enter' || e.key === ' ')) {
+      if (document.activeElement && document.activeElement.id === 'user-name') return;
       e.preventDefault();
       handleAction('start');
+      return;
+    }
+    if (state.view === 'email-gate' && e.key === 'Enter') {
+      if (document.activeElement && document.activeElement.id === 'gate-email') {
+        e.preventDefault();
+        handleAction('show-report');
+      }
       return;
     }
     if (state.view !== 'question') return;
