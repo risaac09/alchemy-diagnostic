@@ -275,8 +275,7 @@
     recs.push({
       tier: 'Discovery call',
       body: 'Walk through these results in person. Thirty minutes to map what the diagnostic surfaced.',
-      // TODO: replace with your actual Cal.com / Calendly URL
-      cta: { label: 'Book a call →', href: 'https://rubinsteinproductions.com' }
+      cta: { label: 'Book a call →', href: 'mailto:isaac@rubinsteinproductions.com?subject=Discovery Call — Information Metabolism Diagnostic' }
     });
     return recs.slice(0, 3);
   }
