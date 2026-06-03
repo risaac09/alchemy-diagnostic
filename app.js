@@ -1,7 +1,7 @@
 /* Alchemy Diagnostic Snapshot
  * Information Metabolism assessment built on the torus framework.
  * Vanilla JS, no dependencies. Pure SVG rendering.
- * (c) Rubinstein Productions
+ * Standalone diagnostic — results computed locally.
  */
 (function () {
   'use strict';
@@ -248,35 +248,36 @@
 
   function generateRecommendations(s) {
     const recs = [];
+    if (s.transformation <= 2 && s.volume >= 4) {
+      recs.push({
+        tier: 'Sift first',
+        body: 'Your intake is high but little is metabolizing. Before adding output, build a filter and a metabolizing rhythm — less in, slower in, more digested.'
+      });
+    }
     if (s.expression <= 2) {
       recs.push({
-        tier: 'Founder Story',
-        body: 'A Founder Story engagement could establish your output voice — the practice of releasing what you have already metabolized.'
+        tier: 'Release what you already have',
+        body: 'You are holding more than you are releasing. Establish an output practice: one small, regular act of saying what you have already metabolized.'
       });
     }
     if (s.returnFlow <= 2) {
       recs.push({
-        tier: 'Program Engagement',
-        body: 'A Program Engagement could help you build return-flow infrastructure — publishing rhythms that feed back into inquiry.'
-      });
-    }
-    if (s.transformation <= 2 && s.volume >= 4) {
-      recs.push({
-        tier: 'Sift Practice',
-        body: 'Before adding output, the system needs an intake filter and a metabolizing rhythm. A short Sift engagement comes first.'
+        tier: 'Close the loop',
+        body: 'Information is moving through but not returning. Build a return-flow habit — a publishing rhythm that feeds audience response back into your inquiry.'
       });
     }
     if (s.circulation >= 4) {
       recs.push({
-        tier: 'Retained / Mode 3',
-        body: 'You are running a torus already. A retained engagement would give you longitudinal tracking and refinement, not restructuring.'
+        tier: 'Refine, do not restructure',
+        body: 'You are running a torus already. Next work is longitudinal: track what circulates, notice drift, refine the rhythm — not rebuild it.'
       });
     }
-    recs.push({
-      tier: 'Discovery call',
-      body: 'Walk through these results in person. Thirty minutes to map what the diagnostic surfaced.',
-      cta: { label: 'Book a call →', href: 'mailto:isaac@rubinsteinproductions.com?subject=Discovery Call — Information Metabolism Diagnostic' }
-    });
+    if (recs.length === 0) {
+      recs.push({
+        tier: 'Sit with it',
+        body: 'Nothing is flashing red. Re-read the findings. The work now is attention, not action.'
+      });
+    }
     return recs.slice(0, 3);
   }
 
@@ -435,8 +436,8 @@
   function renderLanding() {
     return `
 <section class="landing">
-  <div class="eyebrow">RUBINSTEIN PRODUCTIONS</div>
-  <h1>Information Metabolism Diagnostic</h1>
+  <div class="eyebrow">INFORMATION METABOLISM</div>
+  <h1>Diagnostic</h1>
   <p class="lede">A 12-question snapshot of how information moves through your system. Are you running a pipe, or a torus?</p>
   <ul class="meta">
     <li>Twelve questions</li>
@@ -546,7 +547,7 @@
     return `
 <section class="report">
   <div class="report-header">
-    <div class="eyebrow">RUBINSTEIN PRODUCTIONS · INFORMATION ALCHEMIST OS</div>
+    <div class="eyebrow">INFORMATION ALCHEMIST OS</div>
     <h1>Information Metabolism Report${forLine}</h1>
     <div class="report-meta">${date} · placement: <strong>${q.name}</strong></div>
   </div>
@@ -580,7 +581,7 @@
   </div>
 
   <div class="report-footer">
-    <div class="report-mark">rubinsteinproductions.com</div>
+    <div class="report-mark">information metabolism diagnostic</div>
     <div class="report-actions no-print">
       <button class="btn-ghost" data-action="restart">↻ Start over</button>
       <button class="btn-primary" data-action="print">Save as PDF</button>

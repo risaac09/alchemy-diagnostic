@@ -9,11 +9,11 @@ Twelve-question assessment across four torus axes (intake regulation, transforma
 - **2×2 placement map** (volume × circulation) — Stagnant / Drowning / Distilling / Thriving
 - **Four-axis radar chart** — client polygon overlaid on the ideal balanced torus
 - **Key findings** (rule-based, 3–5 bullets)
-- **Recommendations** mapped to RP service tiers (Founder Story, Program Engagement, etc.)
+- **Recommendations** — practice prescriptions (Sift first, Release, Close the loop, Refine) mapped to the user's shape
 
 Two entry points:
 - `index.html` — full standalone experience (live-call mode, self-service)
-- `embed.html` — iframe-minimal variant with `postMessage` API (drop into rubinsteinproductions.com)
+- `embed.html` — iframe-minimal variant with `postMessage` API (embed in any host page)
 
 ## Hard rules (do not violate)
 

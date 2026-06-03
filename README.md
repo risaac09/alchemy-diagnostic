@@ -12,7 +12,7 @@ Asks twelve questions about how information moves through your system, then comp
 - **Placement map** — where you sit on a 2×2 of volume × circulation (Stagnant / Drowning / Distilling / Thriving)
 - **Radar chart** — your shape across intake, transformation, expression, return flow
 - **Findings** — rule-based interpretations of your scores
-- **Recommendations** — mapped to Rubinstein Productions service tiers
+- **Recommendations** — practice prescriptions mapped to your shape
 
 Everything runs in the browser. No backend, no database, no email gate, no tracking. The report is exportable via browser print (`Cmd+P → Save as PDF`).
 
@@ -39,9 +39,9 @@ icon.svg         — torus mark
 CLAUDE.md        — project constraints and design rules
 ```
 
-## Embed on rubinsteinproductions.com
+## Embed anywhere
 
-Drop this snippet anywhere on the main site:
+Drop this snippet into any host page:
 
 ```html
 <iframe
@@ -71,7 +71,6 @@ The iframe sends three messages to the parent:
 3. Walk the client through the twelve questions verbally — let them answer, you click
 4. At the report, talk through findings and recommendations live
 5. `Cmd+P → Save as PDF` to give them a take-home artifact
-6. Send the PDF and follow up with a discovery-call invitation
 
 The diagnostic is the conversation, not a substitute for it.
 
@@ -89,4 +88,4 @@ Or push manually and enable Pages in repo settings → Pages → main branch / r
 
 ## License
 
-© Rubinstein Productions. All rights reserved. The methodology (Information Alchemist OS, the torus framework, Voice Liberation) is proprietary; the code structure is freely studyable.
+The methodology (Information Alchemist OS, the torus framework, Voice Liberation) is proprietary; the code structure is freely studyable.
